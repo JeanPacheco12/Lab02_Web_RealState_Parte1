@@ -1,6 +1,6 @@
 ---
 
-# Lab 02 - Real Estate Web App (Parte 1: Comparación de Propiedades)
+# Lab 08 - Real Estate Web App (Parte 1: Comparación de Propiedades)
 
 ## Descripción del Proyecto
 Esta es la primera parte de la aplicación web de bienes raíces que vimos en clase y donde aplicamos conceptos de Web del curso y posteriormente fue construida con React y TypeScript. El objetivo principal de esta entrega es implementar una herramienta interactiva que permita a los usuarios comparar múltiples propiedades lado a lado antes de tomar una decisión de compra o alquiler.
