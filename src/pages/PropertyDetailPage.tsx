@@ -14,7 +14,6 @@ import { ArrowLeft, MapPin, Bed, Bath, Square, Calendar, Tag } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { getPropertyById, deleteProperty } from '@/lib/storage';
-import { ImageGallery } from '@/components/ImageGallery'; // <--- NUESTRO NUEVO IMPORT
 import {
   PROPERTY_TYPE_LABELS,
   OPERATION_TYPE_LABELS,
@@ -58,10 +57,10 @@ export function PropertyDetailPage(): React.ReactElement {
     }
   };
 
-  // Preparamos las imágenes (usamos un placeholder si no hay ninguna)
-  const galleryImages = property.images?.length > 0 
-    ? property.images 
-    : [`https://placehold.co/1200x600/e2e8f0/64748b?text=${encodeURIComponent(property.propertyType)}`];
+  // Imagen principal o placeholder
+  const mainImage =
+    property.images[0] ??
+    `https://placehold.co/1200x600/e2e8f0/64748b?text=${encodeURIComponent(property.propertyType)}`;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -79,24 +78,37 @@ export function PropertyDetailPage(): React.ReactElement {
         {/* Columna principal */}
         <div className="lg:col-span-2 space-y-6">
           
-          {/* ==================================================================
-              AQUÍ INYECTAMOS NUESTRA NUEVA GALERÍA
-              ================================================================== */}
-          <ImageGallery 
-            images={galleryImages} 
-            title={property.title}
-            badge={
-              <span
-                className={`absolute top-4 left-4 px-4 py-2 text-sm font-semibold rounded-full z-10 shadow-sm ${
-                  property.operationType === 'venta'
-                    ? 'bg-green-500 text-white'
-                    : 'bg-blue-500 text-white'
-                }`}
-              >
-                {OPERATION_TYPE_LABELS[property.operationType]}
-              </span>
-            }
-          />
+          {/* Imagen principal */}
+          <div className="relative rounded-lg overflow-hidden">
+            <img
+              src={mainImage}
+              alt={property.title}
+              className="w-full h-[400px] object-cover"
+            />
+            <span
+              className={`absolute top-4 left-4 px-4 py-2 text-sm font-semibold rounded-full ${
+                property.operationType === 'venta'
+                  ? 'bg-green-500 text-white'
+                  : 'bg-blue-500 text-white'
+              }`}
+            >
+              {OPERATION_TYPE_LABELS[property.operationType]}
+            </span>
+          </div>
+
+          {/* Galería de imágenes adicionales */}
+          {property.images.length > 1 && (
+            <div className="grid grid-cols-4 gap-2">
+              {property.images.slice(1).map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`${property.title} - Imagen ${index + 2}`}
+                  className="w-full h-24 object-cover rounded-lg"
+                />
+              ))}
+            </div>
+          )}
 
           {/* Descripción */}
           <Card>
